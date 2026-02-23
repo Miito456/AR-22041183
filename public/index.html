@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Traceroute Visual</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Syne:wght@400;700;800&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <link rel="stylesheet" href="style.css">
+
+
+</head>
+
+<body>
+
+  <div class="shell">
+
+    <!-- HEADER -->
+    <header>
+      <div class="brand">
+        <div class="brand-icon"></div>
+        <h1>TRACE<span>ROUTE</span></h1>
+      </div>
+
+      <div class="search-form">
+        <div class="input-wrapper">
+          <span class="input-prefix">HOST›</span>
+          <input type="text" id="host" placeholder="www.gov.co" autocomplete="off" spellcheck="false">
+        </div>
+        <button id="btnTraceroute">Ejecutar</button>
+      </div>
+
+      <div class="status-bar">
+        <div class="status-dot" id="statusDot"></div>
+        <span class="status-label" id="statusLabel">Esperando</span>
+      </div>
+    </header>
+
+    <!-- MAP WRAPPER -->
+    <div class="map-wrapper">
+      <div id="map"></div>
+
+      <!-- INFO PANEL -->
+      <div class="info-panel visible" id="infoPanel">
+
+        <!-- Último salto -->
+        <div class="info-panel-label">Último salto</div>
+        <button id="btnFullHistory" class="history-btn">
+          Ver historial completo
+        </button>
+        <button id="btnExportPDF" class="pdf-btn">
+          Exportar PDF
+        </button>
+        <div class="info-row">
+          <span class="info-key">HOP</span>
+          <span class="info-val accent" id="infoHop">—</span>
+        </div>
+
+        <div class="info-row">
+          <span class="info-key">IP</span>
+          <span class="info-val" id="infoIp">—</span>
+        </div>
+
+        <div class="info-row">
+          <span class="info-key">CIUDAD</span>
+          <span class="info-val" id="infoCity">—</span>
+        </div>
+
+        <div class="info-row">
+          <span class="info-key">PAÍS</span>
+          <span class="info-val" id="infoCountry">—</span>
+        </div>
+
+        <div class="info-row">
+          <span class="info-key">ISP</span>
+          <span class="info-val" id="infoIsp">—</span>
+        </div>
+
+        <div class="info-row">
+          <span class="info-key">ASN</span>
+          <span class="info-val" id="infoAs">—</span>
+        </div>
+
+        <div class="info-row">
+          <span class="info-key">REVERSE</span>
+          <span class="info-val" id="infoReverse">—</span>
+        </div>
+
+        <div class="info-row">
+          <span class="info-key">LAT / LON</span>
+          <span class="info-val" id="infoCoords">—</span>
+        </div>
+
+        <!-- Separador -->
+        <div style="height:1px;background:var(--border);margin:14px 0;"></div>
+
+        <!-- Historial completo -->
+        <div class="info-panel-label">Historial completo</div>
+
+        <div id="hopTable" style="max-height:200px;overflow-y:auto;"></div>
+
+      </div>
+
+      <!-- LOADING OVERLAY -->
+      <div class="loading-overlay" id="loadingOverlay">
+        <div class="loader">
+          <div class="loader-ring"></div>
+          <span class="loader-text">Trazando ruta…</span>
+        </div>
+      </div>
+
+      <!-- FOOTER STRIP -->
+      <div class="footer-strip">
+        <div class="footer-stat">
+          <span class="footer-stat-label">SALTOS</span>
+          <span class="footer-stat-value accent" id="statHops">0</span>
+        </div>
+        <div class="footer-divider"></div>
+        <div class="footer-stat">
+          <span class="footer-stat-label">DESTINO</span>
+          <span class="footer-stat-value" id="statTarget">—</span>
+        </div>
+        <div class="footer-divider"></div>
+        <div class="footer-stat">
+          <span class="footer-stat-label">ESTADO</span>
+          <span class="footer-stat-value" id="statStatus">Idle</span>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+
+
+  <div id="hopModal" class="modal">
+    <div class="modal-content">
+      <span id="closeModal" class="close-btn">&times;</span>
+      <h2>Detalle del Salto</h2>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+
+  <div id="historyModal" class="modal">
+    <div class="modal-content">
+      <span id="closeHistoryModal" class="close-btn">&times;</span>
+      <h2>Historial Completo</h2>
+      <div id="fullHistoryContainer"></div>
+    </div>
+  </div>
+  <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="/js/main.js"></script>
+  
+
+</body>
+
+</html>
